@@ -8,30 +8,31 @@ import {
 } from 'react-bootstrap'
 import Rivets from './pages/Rivets'
 import NewRivet from './pages/NewRivet'
+const api = "http://127.0.0.1:3000"
 
 class App extends Component {
     constructor(props){
    super(props)
        this.state = {
-         apiUrl: "http://localhost:3000",
          rivets: [],
          newRivetSuccess: false,
          errors: null
        }
      }
 
+
     componentWillMount(){
-          fetch(`${this.state.apiUrl}/rivets`)
+          fetch(`${api}/rivets`)
           .then((rawResponse) =>{
             return rawResponse.json()
           })
           .then((parsedResponse)=>{
-            this.setState({cats: parsedResponse.rivets})
+            this.setState({rivets: parsedResponse.rivets})
           })
         }
 
-        handleNewcat(params){
-        fetch(`${this.state.apiUrl}/rivets`,
+        handleNewRivet(params){
+        fetch(`${api}/rivets`,
           {
             body: JSON.stringify(params),  // <- we need to stringify the json for fetch
             headers: {  // <- We specify that we're sending JSON, and expect JSON back
@@ -81,7 +82,7 @@ class App extends Component {
                           <Link to='/rivets' id='rivets-link'>
                             Show me the Rivets
                           </Link>
-                        <Rivets rivets = {this.state.rivets} />
+                        <Rivets rivets={this.state.rivets} />
                       </small>
                       </Col>
                     </Row>
@@ -109,7 +110,7 @@ class App extends Component {
                       </Col>
                     </Row>
                   </PageHeader>
-                   <Rivets rivets={this.state.rivets} />
+
                    <NewRivet submitHandler={this.newRivetSubmit.bind(this)} />
                 </Grid>
               )} />
